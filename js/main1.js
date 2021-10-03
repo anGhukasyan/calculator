@@ -35,6 +35,11 @@ $(".dot").click(function() {
   if(isNumEnd){
     display.append("0.");
   }
+
+  if(haveEqual){
+    display.empty().append("0.");
+    haveEqual = false;
+  }
   haveDot=true;
 });
 
@@ -54,29 +59,69 @@ $(".btn-operator").click(function() {
     display.empty().append(result + operator);
     haveEqual = false;
   }
- 
+
   if(haveOperator && thisText !== operator && isNumEnd){
     operator = thisText;
     display.text(displayText.slice(0,-1)).append(operator);
   }
+  firstEqual = true;
+  console.log(delOperator);
 });
 
 $(".equal").click(function() {
   let displayText = display.text();
+  if(firstEqual){
     if(!haveOperator){
       result = eval(displayText);
       display.append("=" + result);
       haveEqual=true;
-      haveOperator = true; 
+      haveOperator = false;
       isNumEnd = true;
-    } 
+      haveDot=false;
+      firstEqual = false;
+    }
+  }
 });
+
+$(".backspace").click(function() {
+  let displayText = display.text();
+  let lastItem = displayText.slice(-1);
+  // let beckspaceResult = display.text(displayText.slice(0,-1));
+  if (displayText.length === 1){
+    display=display.text("0");
+  }
+  else {
+    display=display.text(displayText.slice(0,-1))
+    if(lastItem ==="+" || lastItem ==="-" || lastItem ==="*" || lastItem ==="/"){
+      haveOperator=false;
+      isNumEnd=false;
+      console.log(haveDot);
+      if(!haveDot){
+        haveDot=false;
+      }
+
+    }
+    if(lastItem ==="."){
+      haveDot=false;
+    }
+    if(haveEqual){
+      display.text("0");
+      haveEqual = false;
+      haveDot = false;
+      // isNumEnd=false;
+    }
+    // isNumEnd=true;
+  }
+  // console.log(displayText.length);
+
+});
+
 
 
 $(".btn-clear").click(function() {
   display.text("0");
   haveEqual = false;
   haveDot = false;
-  // haveOperator = false;
-   
- });
+  isNumEnd=false;
+
+});
