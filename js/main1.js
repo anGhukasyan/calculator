@@ -35,18 +35,24 @@ $(".dot").click(function() {
   if(isNumEnd){
     display.append("0.");
   }
-
   if(haveEqual){
     display.empty().append("0.");
     haveEqual = false;
   }
+  if(delOperator){
+    console.log("del")
+  }
   haveDot=true;
+  console.log(delOperator);
 });
 
 $(".btn-operator").click(function() {
   let displayText = display.text()
   let thisText = $(this).text();
-
+  let lastItem = displayText.slice(-1);
+  if(lastItem ==="."){
+    display.text(displayText.slice(0,-1));
+  }
   if (!haveOperator){
     display.append(thisText);
     operator = thisText;
@@ -65,7 +71,6 @@ $(".btn-operator").click(function() {
     display.text(displayText.slice(0,-1)).append(operator);
   }
   firstEqual = true;
-  console.log(delOperator);
 });
 
 $(".equal").click(function() {
@@ -95,7 +100,7 @@ $(".backspace").click(function() {
     if(lastItem ==="+" || lastItem ==="-" || lastItem ==="*" || lastItem ==="/"){
       haveOperator=false;
       isNumEnd=false;
-      console.log(haveDot);
+      delOperator=true;
       if(!haveDot){
         haveDot=false;
       }
