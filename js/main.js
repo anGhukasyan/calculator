@@ -6,6 +6,8 @@ let haveDot = false;
 let haveOperatorDot = false;
 let haveEqual = false;
 let isNumEnd = false;
+// let array1= [0];
+let m = 0;
 
 $(".number").click(function() {
   let displayText = display.text();
@@ -120,4 +122,23 @@ $(".btn-clear").click(function() {
   haveEqual = false;
   haveDot = false;
   isNumEnd=false;
+});
+
+
+$(".btn-m-plus").click(function() {
+  let mDisplayText = display.text()
+  let array1 = mDisplayText.split(/[+,/,=,*]/);
+  memoryItem = array1[array1.length - 1]
+  if(memoryItem!== ""){
+    m += +memoryItem;
+  }
+  else{
+    mDisplayText=mDisplayText.slice(0,-1)
+    array1 = mDisplayText.split(/[+,/,=,*]/);
+    memoryItem = array1[array1.length - 1]
+    m += +memoryItem;
+  }
+
+
+  console.log(m);
 });
