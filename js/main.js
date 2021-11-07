@@ -6,7 +6,7 @@ let haveDot = false;
 let haveOperatorDot = false;
 let haveEqual = false;
 let isNumEnd = false;
-// let array1= [0];
+let mClear=false;
 let m = 0;
 
 $(".number").click(function() {
@@ -18,6 +18,7 @@ $(".number").click(function() {
   }
   if(displayText === "0"){
     display.empty();
+    
   }
   isNumEnd = false;
   display.append(currentNum);
@@ -123,22 +124,58 @@ $(".btn-clear").click(function() {
   haveDot = false;
   isNumEnd=false;
 });
+function mNumber(arr,expression){
+  arr = expression.split(/[+,/,= ,*]/);
+  memoryItem = arr[arr.length - 1];
+}
+                             
 
+$(".btn-m").click(function() {
+  let mDisplayText = display.text();
+  let array1 = [];
+  mNumber(array1,mDisplayText);
+  if(memoryItem === ""){
+      mNumber(array1,mDisplayText.slice(0,-1));  
+  }
+  if(memoryItem.indexOf('-') > -1) {
+    array1 = memoryItem.split("-");
+    memoryItem = array1[array1.length - 1];
+      if (memoryItem ===""){
+        mNumber(array1,mDisplayText.slice(0,-1));
+      }
+      else if(isNumEnd){
+       memoryItem=-memoryItem
+      }
+  }
 
-$(".btn-m-plus").click(function() {
-  let mDisplayText = display.text()
-  let array1 = mDisplayText.split(/[+,/,=,*]/);
-  memoryItem = array1[array1.length - 1]
-  if(memoryItem!== ""){
+  if($(this).hasClass("btn-m-plus")){
     m += +memoryItem;
   }
-  else{
-    mDisplayText=mDisplayText.slice(0,-1)
-    array1 = mDisplayText.split(/[+,/,=,*]/);
-    memoryItem = array1[array1.length - 1]
-    m += +memoryItem;
+  else {
+    m -= +memoryItem;
   }
-
-
-  console.log(m);
+  mClear=false;
 });
+
+
+$(".btn-m-recall").click(function() {
+  let displayText = display.text();
+  if(!mClear){
+    if(!isNumEnd || displayText.includes("=")){ 
+      display.empty().append(m);
+      haveEqual=false;
+    }
+    else if(isNumEnd) {
+      display.append(m);
+      haveOperator = false;
+    }
+  }
+ 
+});
+
+$(".btn-m-clear").click(function() {
+  m=0;
+  mClear = true;
+});
+
+
